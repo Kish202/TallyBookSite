@@ -1,10 +1,11 @@
 import { z } from "zod";
 
-export const MAX_PAGE_SIZE = 100;
 export const DEFAULT_PAGE_SIZE = 20;
 
 export const paginationQuerySchema = z.object({
-  limit: z.coerce.number().int().min(1).max(MAX_PAGE_SIZE).default(DEFAULT_PAGE_SIZE),
+  // Clients exporting their data need to pull everything in one request, so
+  // the page size is no longer capped.
+  limit: z.coerce.number().int().min(1).default(DEFAULT_PAGE_SIZE),
   offset: z.coerce.number().int().min(0).default(0),
 });
 

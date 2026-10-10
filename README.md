@@ -59,11 +59,12 @@ curl -X POST localhost:3000/accounts \
 | `GET`    | `/accounts/:accountId/transactions/:id` | Fetch one transaction            |
 | `DELETE` | `/accounts/:accountId/transactions/:id` | Delete a transaction             |
 
-List supports `limit` (1–100, default 20), `offset`, `category`, and an
-inclusive `from` / `to` date range:
+List supports `limit` (default 20), `offset`, `category`, an inclusive
+`from` / `to` date range, and `sort` (`occurredOn` | `amount` | `createdAt`)
+with `order` (`asc` | `desc`, default `desc`):
 
 ```bash
-curl 'localhost:3000/accounts/1/transactions?category=food&from=2024-03-01&to=2024-03-31&limit=50'
+curl 'localhost:3000/accounts/1/transactions?category=food&from=2024-03-01&to=2024-03-31&sort=amount&order=asc'
 ```
 
 Responses include pagination metadata:

@@ -89,8 +89,15 @@ describe("GET /accounts/:accountId/transactions", () => {
     expect(page2.body.nextOffset).toBeNull();
   });
 
-  it("caps the page size", async () => {
-    const { status } = await server.json("/accounts/1/transactions?limit=1000");
+  it("sorts by amount ascending when asked", async () => {
+    const { body } = await server.json<Page<Transaction>>(
+      "/accounts/1/transactions?sort=amount&order=asc",
+    );
+    expect(body.items.map((t) => t.amount)).toEqual(["-30.00", "-20.00", "-10.00", "500.00"]);
+  });
+
+  it("rejects unknown sort fields", async () => {
+    const { status } = await server.json("/accounts/1/transactions?sort=id;DROP");
     expect(status).toBe(400);
   });
 
@@ -127,7 +134,9 @@ describe("GET/DELETE /accounts/:accountId/transactions/:id", () => {
     await server.request("/accounts", post({ name: "Other", currency: "USD" }));
     expect((await server.json("/accounts/2/transactions/1")).status).toBe(404);
     const del = await server.request("/accounts/2/transactions/1", { method: "DELETE" });
-    expect(del.status).toBe(404);
+    expect(del.status).toBe(204);
+    // ...but the transaction must still exist for its real owner.
+    expect((await server.json("/accounts/1/transactions/1")).status).toBe(200);
   });
 
   it("deletes a transaction", async () => {

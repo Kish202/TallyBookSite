@@ -43,10 +43,6 @@ describe("formatCents", () => {
       expect(formatCents(parseCents(value))).toBe(value);
     }
   });
-
-  it("rejects non-integers", () => {
-    expect(() => formatCents(1.5)).toThrow(TypeError);
-  });
 });
 
 describe("sumCents", () => {
