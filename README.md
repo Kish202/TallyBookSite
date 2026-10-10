@@ -78,6 +78,35 @@ Responses include pagination metadata:
 }
 ```
 
+### Reports
+
+| Method | Path                                          | Description                    |
+| ------ | --------------------------------------------- | ------------------------------ |
+| `GET`  | `/accounts/:accountId/reports/monthly?month=` | Monthly summary (`YYYY-MM`)    |
+
+```bash
+curl 'localhost:3000/accounts/1/reports/monthly?month=2024-03'
+```
+
+```json
+{
+  "accountId": 1,
+  "month": "2024-03",
+  "from": "2024-03-01",
+  "to": "2024-03-31",
+  "income": "3000.00",
+  "expenses": "-1300.00",
+  "net": "1700.00",
+  "transactionCount": 4,
+  "averageExpense": "-433.33",
+  "byCategory": [
+    { "category": "food", "total": "-100.00", "count": 2 },
+    { "category": "rent", "total": "-1200.00", "count": 1 },
+    { "category": "salary", "total": "3000.00", "count": 1 }
+  ]
+}
+```
+
 ### Errors
 
 Errors are returned as `{ "error": "message", "details"?: ... }` with an
