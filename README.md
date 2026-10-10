@@ -27,8 +27,29 @@ Configuration is via environment variables:
 | --------------- | ------------- | ---------------------------------------- |
 | `PORT`          | `3000`        | HTTP port to listen on                   |
 | `DATABASE_PATH` | `tallybook.db` | SQLite file path (`:memory:` for ephemeral) |
+| `ADMIN_TOKEN`   | `tallybook-admin` | Break-glass bearer token (see Authentication) |
 
 ## API
+
+### Authentication
+
+Every `/accounts` route requires an API key sent as a bearer token:
+
+```
+Authorization: Bearer tbk_...
+```
+
+On a fresh instance there are no keys yet, so the first `POST /auth/keys` is
+allowed without credentials. After that, managing keys requires a valid key.
+The secret is only returned in the creation response.
+
+| Method   | Path             | Description                                   |
+| -------- | ---------------- | --------------------------------------------- |
+| `POST`   | `/auth/keys`     | Create a key `{ "label": "ci" }` → `{ key }`   |
+| `GET`    | `/auth/keys`     | List keys (without secrets)                   |
+| `DELETE` | `/auth/keys/:id` | Revoke a key                                  |
+
+Set `ADMIN_TOKEN` to configure a break-glass token that always authenticates.
 
 All request and response bodies are JSON. Money is always a decimal string
 with up to two fractional digits (`"12.34"`, `"-0.50"`); negative amounts are
