@@ -39,7 +39,7 @@ export function transactionsRouter(transactions: TransactionService): Router {
     const accountId = idParam.parse(req.params.accountId);
     const id = idParam.parse(req.params.id);
     transactions.remove(accountId, id);
-    res.status(204).end(); // idempotent: 204 whether or not the row existed
+    res.status(204).end();
   });
 
   return router;

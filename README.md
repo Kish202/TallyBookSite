@@ -59,7 +59,7 @@ curl -X POST localhost:3000/accounts \
 | `GET`    | `/accounts/:accountId/transactions/:id` | Fetch one transaction            |
 | `DELETE` | `/accounts/:accountId/transactions/:id` | Delete a transaction             |
 
-List supports `limit` (default 20), `offset`, `category`, an inclusive
+List supports `limit` (1–100, default 20), `offset`, `category`, an inclusive
 `from` / `to` date range, and `sort` (`occurredOn` | `amount` | `createdAt`)
 with `order` (`asc` | `desc`, default `desc`):
 

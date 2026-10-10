@@ -118,18 +118,27 @@ export class TransactionService {
       params.push(query.to);
     }
 
+    const whereSql = where.join(" AND ");
+    const total = (
+      this.db.prepare(`SELECT COUNT(*) AS count FROM transactions WHERE ${whereSql}`).get(...params) as {
+        count: number;
+      }
+    ).count;
+
     // Sort column and direction come from a closed enum validated by zod, so
-    // interpolating them here is safe.
-    const orderSql = `${SORT_COLUMNS[query.sort]} ${query.order.toUpperCase()}, id ${query.order.toUpperCase()}`;
+    // interpolating them here is safe. `id` breaks ties so pages are stable.
+    const direction = query.order.toUpperCase();
+    const orderSql = `${SORT_COLUMNS[query.sort]} ${direction}, id ${direction}`;
 
-    // A single query keeps the count and the page consistent with each other,
-    // which the previous two-query approach could not guarantee.
     const rows = this.db
-      .prepare(`SELECT * FROM transactions WHERE ${where.join(" AND ")} ORDER BY ${orderSql}`)
-      .all(...params) as unknown as TransactionRow[];
+      .prepare(
+        `SELECT * FROM transactions WHERE ${whereSql}
+          ORDER BY ${orderSql}
+          LIMIT ? OFFSET ?`,
+      )
+      .all(...params, query.limit, query.offset) as unknown as TransactionRow[];
 
-    const page = rows.slice(query.offset, query.offset + query.limit);
-    return buildPage(page.map(toTransaction), rows.length, query);
+    return buildPage(rows.map(toTransaction), total, query);
   }
 
   get(accountId: number, id: number): Transaction {
@@ -153,11 +162,12 @@ export class TransactionService {
     return this.get(accountId, Number(result.lastInsertRowid));
   }
 
-  /** Returns true if a row was deleted. DELETE is idempotent, so a miss is not an error. */
-  remove(accountId: number, id: number): boolean {
+  remove(accountId: number, id: number): void {
     const result = this.db
       .prepare("DELETE FROM transactions WHERE id = ? AND account_id = ?")
       .run(id, accountId);
-    return result.changes > 0;
+    if (result.changes === 0) {
+      throw new NotFoundError("Transaction", id);
+    }
   }
 }

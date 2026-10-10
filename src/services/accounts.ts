@@ -34,11 +34,26 @@ interface AccountRow {
   name: string;
   currency: string;
   created_at: string;
+  balance_cents: number;
 }
 
-const ACCOUNT_SELECT = "SELECT id, name, currency, created_at FROM accounts";
-const BALANCE_SELECT =
-  "SELECT COALESCE(SUM(amount_cents), 0) AS balance_cents FROM transactions WHERE account_id = ?";
+/** One round trip for accounts and balances; the LEFT JOIN keeps empty accounts. */
+const ACCOUNT_SELECT = `
+  SELECT a.id, a.name, a.currency, a.created_at,
+         COALESCE(SUM(t.amount_cents), 0) AS balance_cents
+    FROM accounts a
+    LEFT JOIN transactions t ON t.account_id = a.id
+`;
+
+function toAccount(row: AccountRow): Account {
+  return {
+    id: row.id,
+    name: row.name,
+    currency: row.currency,
+    balance: formatCents(row.balance_cents),
+    createdAt: row.created_at,
+  };
+}
 
 function isUniqueViolation(err: unknown): boolean {
   return err instanceof Error && /UNIQUE constraint failed/.test(err.message);
@@ -47,34 +62,21 @@ function isUniqueViolation(err: unknown): boolean {
 export class AccountService {
   constructor(private readonly db: Database) {}
 
-  private balanceCents(accountId: number): number {
-    const row = this.db.prepare(BALANCE_SELECT).get(accountId) as { balance_cents: number };
-    return row.balance_cents;
-  }
-
-  private toAccount(row: AccountRow): Account {
-    return {
-      id: row.id,
-      name: row.name,
-      currency: row.currency,
-      balance: formatCents(this.balanceCents(row.id)),
-      createdAt: row.created_at,
-    };
-  }
-
   list(): Account[] {
-    const rows = this.db.prepare(`${ACCOUNT_SELECT} ORDER BY id`).all() as unknown as AccountRow[];
-    return rows.map((row) => this.toAccount(row));
+    const rows = this.db
+      .prepare(`${ACCOUNT_SELECT} GROUP BY a.id ORDER BY a.id`)
+      .all() as unknown as AccountRow[];
+    return rows.map(toAccount);
   }
 
   get(id: number): Account {
-    const row = this.db.prepare(`${ACCOUNT_SELECT} WHERE id = ?`).get(id) as
+    const row = this.db.prepare(`${ACCOUNT_SELECT} WHERE a.id = ? GROUP BY a.id`).get(id) as
       | AccountRow
       | undefined;
     if (!row) {
       throw new NotFoundError("Account", id);
     }
-    return this.toAccount(row);
+    return toAccount(row);
   }
 
   create(input: CreateAccountInput): Account {
