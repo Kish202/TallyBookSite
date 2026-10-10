@@ -1,6 +1,6 @@
 import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
-import { createApp } from "../src/app.js";
+import { createApp, type AppDeps } from "../src/app.js";
 import { openDatabase, type Database } from "../src/db.js";
 
 export interface TestServer {
@@ -11,9 +11,9 @@ export interface TestServer {
   json<T = unknown>(path: string, init?: RequestInit): Promise<{ status: number; body: T }>;
 }
 
-export async function startTestServer(): Promise<TestServer> {
+export async function startTestServer(deps: AppDeps = {}): Promise<TestServer> {
   const db = openDatabase(":memory:");
-  const app = createApp(db);
+  const app = createApp(db, deps);
   const server: Server = await new Promise((resolve) => {
     const s = app.listen(0, () => resolve(s));
   });

@@ -19,6 +19,7 @@ const SCHEMA = `
     category      TEXT    NOT NULL,
     description   TEXT    NOT NULL DEFAULT '',
     occurred_on   TEXT    NOT NULL,          -- ISO date, YYYY-MM-DD
+    receipt_url   TEXT,                       -- validated image URL, or NULL
     created_at    TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
   );
 

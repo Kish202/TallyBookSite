@@ -5,14 +5,20 @@ import { accountsRouter } from "./routes/accounts.js";
 import { transactionsRouter } from "./routes/transactions.js";
 import { AccountService } from "./services/accounts.js";
 import { TransactionService } from "./services/transactions.js";
+import type { FetchLike } from "./lib/receipts.js";
 
-export function createApp(db: Database): Express {
+export interface AppDeps {
+  /** Override the fetch implementation used for receipt validation. */
+  fetch?: FetchLike;
+}
+
+export function createApp(db: Database, deps: AppDeps = {}): Express {
   const app = express();
   app.disable("x-powered-by");
   app.use(express.json({ limit: "100kb" }));
 
   const accounts = new AccountService(db);
-  const transactions = new TransactionService(db);
+  const transactions = new TransactionService(db, deps.fetch);
 
   app.get("/health", (_req, res) => {
     res.json({ status: "ok" });

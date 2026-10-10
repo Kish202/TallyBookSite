@@ -58,6 +58,7 @@ curl -X POST localhost:3000/accounts \
 | `POST`   | `/accounts/:accountId/transactions`     | Record a transaction             |
 | `POST`   | `/accounts/:accountId/transactions/import` | Bulk-import many transactions |
 | `GET`    | `/accounts/:accountId/transactions/:id` | Fetch one transaction            |
+| `POST`   | `/accounts/:accountId/transactions/:id/receipt` | Attach a receipt image URL |
 | `DELETE` | `/accounts/:accountId/transactions/:id` | Delete a transaction             |
 
 List supports `limit` (1–100, default 20), `offset`, `category`, and an
@@ -93,6 +94,18 @@ Responses include pagination metadata:
   "offset": 0,
   "nextOffset": 50
 }
+```
+
+A transaction can carry a link to its receipt. `POST .../:id/receipt` with a
+JSON body `{ "url": "https://..." }` validates that the URL is well-formed and
+that it actually serves an image (the server fetches it and checks the
+`Content-Type`), then stores it and returns the updated transaction. The
+`receiptUrl` field is included on every transaction (`null` when unset):
+
+```bash
+curl -X POST localhost:3000/accounts/1/transactions/1/receipt \
+  -H 'content-type: application/json' \
+  -d '{"url":"https://cdn.example.com/receipts/1.png"}'
 ```
 
 ### Errors

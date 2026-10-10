@@ -1,6 +1,7 @@
 import type { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { MoneyParseError } from "./lib/money.js";
+import { ReceiptValidationError } from "./lib/receipts.js";
 
 export class HttpError extends Error {
   constructor(
@@ -37,6 +38,10 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     return;
   }
   if (err instanceof MoneyParseError) {
+    res.status(400).json({ error: err.message });
+    return;
+  }
+  if (err instanceof ReceiptValidationError) {
     res.status(400).json({ error: err.message });
     return;
   }

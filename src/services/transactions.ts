@@ -3,6 +3,7 @@ import type { Database } from "../db.js";
 import { NotFoundError } from "../errors.js";
 import { formatCents, parseCents } from "../lib/money.js";
 import { buildPage, paginationQuerySchema, type Page } from "../lib/pagination.js";
+import { validateReceiptUrl, type FetchLike } from "../lib/receipts.js";
 
 const isoDate = z
   .string()
@@ -54,9 +55,14 @@ export const importTransactionsSchema = z.object({
   transactions: z.array(importTransactionItemSchema).min(1).max(500),
 });
 
+export const attachReceiptSchema = z.object({
+  url: z.string().trim().min(1).max(2048),
+});
+
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 export type ListTransactionsQuery = z.infer<typeof listTransactionsQuerySchema>;
 export type ImportTransactionsInput = z.infer<typeof importTransactionsSchema>;
+export type AttachReceiptInput = z.infer<typeof attachReceiptSchema>;
 
 export interface Transaction {
   id: number;
@@ -66,6 +72,8 @@ export interface Transaction {
   category: string;
   description: string;
   occurredOn: string;
+  /** URL of a validated receipt image, or null when none is attached. */
+  receiptUrl: string | null;
   createdAt: string;
 }
 
@@ -76,6 +84,7 @@ interface TransactionRow {
   category: string;
   description: string;
   occurred_on: string;
+  receipt_url: string | null;
   created_at: string;
 }
 
@@ -87,12 +96,16 @@ function toTransaction(row: TransactionRow): Transaction {
     category: row.category,
     description: row.description,
     occurredOn: row.occurred_on,
+    receiptUrl: row.receipt_url ?? null,
     createdAt: row.created_at,
   };
 }
 
 export class TransactionService {
-  constructor(private readonly db: Database) {}
+  constructor(
+    private readonly db: Database,
+    private readonly fetchImpl: FetchLike = globalThis.fetch,
+  ) {}
 
   private assertAccountExists(accountId: number): void {
     const row = this.db.prepare("SELECT 1 FROM accounts WHERE id = ?").get(accountId);
@@ -162,25 +175,43 @@ export class TransactionService {
   importMany(accountId: number, input: ImportTransactionsInput): { imported: number } {
     this.assertAccountExists(accountId);
 
-    const insert = this.db.prepare(
-      `INSERT INTO transactions (account_id, amount_cents, category, description, occurred_on)
-       VALUES (?, ?, ?, ?, ?)`,
-    );
+    const rows = input.transactions.map((item) => [
+      item.accountId ?? accountId,
+      item.amount,
+      item.category,
+      item.description,
+      item.occurredOn,
+    ]);
+
+    // Collapse the batch into a single multi-row INSERT. Only the placeholder
+    // groups are interpolated into the SQL; every value is bound as a parameter.
+    const placeholders = rows.map(() => "(?, ?, ?, ?, ?)").join(", ");
+    const params = rows.flat();
 
     this.db.exec("BEGIN");
     try {
-      let imported = 0;
-      for (const item of input.transactions) {
-        const targetAccountId = item.accountId ?? accountId;
-        insert.run(targetAccountId, item.amount, item.category, item.description, item.occurredOn);
-        imported += 1;
-      }
+      this.db
+        .prepare(
+          `INSERT INTO transactions (account_id, amount_cents, category, description, occurred_on)
+           VALUES ${placeholders}`,
+        )
+        .run(...params);
       this.db.exec("COMMIT");
-      return { imported };
+      return { imported: rows.length };
     } catch (err) {
       this.db.exec("ROLLBACK");
       throw err;
     }
+  }
+
+  async attachReceipt(accountId: number, id: number, input: AttachReceiptInput): Promise<Transaction> {
+    // Ensure the transaction exists and belongs to this account before fetching.
+    this.get(accountId, id);
+    const url = await validateReceiptUrl(input.url, this.fetchImpl);
+    this.db
+      .prepare("UPDATE transactions SET receipt_url = ? WHERE id = ? AND account_id = ?")
+      .run(url, id, accountId);
+    return this.get(accountId, id);
   }
 
   remove(accountId: number, id: number): void {

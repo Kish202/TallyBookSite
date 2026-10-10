@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { Page } from "../src/lib/pagination.js";
 import type { Transaction } from "../src/services/transactions.js";
 import { post, startTestServer, type TestServer } from "./helpers.js";
@@ -164,6 +164,82 @@ describe("POST /accounts/:accountId/transactions/import", () => {
       post({ transactions: [{ amount: "-1.00", category: "food", occurredOn: "2024-03-01" }] }),
     );
     expect(status).toBe(404);
+  });
+});
+
+describe("POST /accounts/:accountId/transactions/:id/receipt", () => {
+  // A stub fetch so the suite never touches the network.
+  const imageResponse = () =>
+    new Response(new Uint8Array([0x89, 0x50]), {
+      status: 200,
+      headers: { "content-type": "image/png" },
+    });
+
+  it("stores the receipt url after confirming it serves an image", async () => {
+    const fetchMock = vi.fn(async () => imageResponse());
+    await server.close();
+    server = await startTestServer({ fetch: fetchMock as unknown as typeof fetch });
+    await server.request("/accounts", post({ name: "Main", currency: "USD" }));
+    await server.request("/accounts/1/transactions", post({ amount: "-9.00", category: "food", occurredOn: "2024-03-01" }));
+
+    const url = "https://cdn.example.com/receipts/1.png";
+    const { status, body } = await server.json<Transaction>(
+      "/accounts/1/transactions/1/receipt",
+      post({ url }),
+    );
+    expect(status).toBe(200);
+    expect(body.receiptUrl).toBe(url);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+
+    const fetched = await server.json<Transaction>("/accounts/1/transactions/1");
+    expect(fetched.body.receiptUrl).toBe(url);
+  });
+
+  it("rejects a URL that is not an image", async () => {
+    const fetchMock = vi.fn(
+      async () => new Response("<html>", { status: 200, headers: { "content-type": "text/html" } }),
+    );
+    await server.close();
+    server = await startTestServer({ fetch: fetchMock as unknown as typeof fetch });
+    await server.request("/accounts", post({ name: "Main", currency: "USD" }));
+    await server.request("/accounts/1/transactions", post({ amount: "-9.00", category: "food", occurredOn: "2024-03-01" }));
+
+    const { status } = await server.json(
+      "/accounts/1/transactions/1/receipt",
+      post({ url: "https://cdn.example.com/receipts/1.png" }),
+    );
+    expect(status).toBe(400);
+  });
+
+  it("rejects a syntactically invalid image url without fetching", async () => {
+    const fetchMock = vi.fn(async () => imageResponse());
+    await server.close();
+    server = await startTestServer({ fetch: fetchMock as unknown as typeof fetch });
+    await server.request("/accounts", post({ name: "Main", currency: "USD" }));
+    await server.request("/accounts/1/transactions", post({ amount: "-9.00", category: "food", occurredOn: "2024-03-01" }));
+
+    const { status } = await server.json(
+      "/accounts/1/transactions/1/receipt",
+      post({ url: "https://example.com/not-an-image.txt" }),
+    );
+    expect(status).toBe(400);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 404 for a transaction in another account", async () => {
+    const fetchMock = vi.fn(async () => imageResponse());
+    await server.close();
+    server = await startTestServer({ fetch: fetchMock as unknown as typeof fetch });
+    await server.request("/accounts", post({ name: "Main", currency: "USD" }));
+    await server.request("/accounts", post({ name: "Other", currency: "USD" }));
+    await server.request("/accounts/1/transactions", post({ amount: "-9.00", category: "food", occurredOn: "2024-03-01" }));
+
+    const { status } = await server.json(
+      "/accounts/2/transactions/1/receipt",
+      post({ url: "https://cdn.example.com/receipts/1.png" }),
+    );
+    expect(status).toBe(404);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
 

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import type { TransactionService } from "../services/transactions.js";
 import {
+  attachReceiptSchema,
   createTransactionSchema,
   importTransactionsSchema,
   listTransactionsQuerySchema,
@@ -41,6 +42,16 @@ export function transactionsRouter(transactions: TransactionService): Router {
     const accountId = idParam.parse(req.params.accountId);
     const id = idParam.parse(req.params.id);
     res.json(transactions.get(accountId, id));
+  });
+
+  router.post<TransactionParams>("/:id/receipt", (req, res, next) => {
+    const accountId = idParam.parse(req.params.accountId);
+    const id = idParam.parse(req.params.id);
+    const input = attachReceiptSchema.parse(req.body);
+    transactions
+      .attachReceipt(accountId, id, input)
+      .then((updated) => res.json(updated))
+      .catch(next);
   });
 
   router.delete<TransactionParams>("/:id", (req, res) => {
