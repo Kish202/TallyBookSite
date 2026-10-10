@@ -2,8 +2,10 @@ import express, { type Express } from "express";
 import type { Database } from "./db.js";
 import { errorHandler, NotFoundError } from "./errors.js";
 import { accountsRouter } from "./routes/accounts.js";
+import { reportsRouter } from "./routes/reports.js";
 import { transactionsRouter } from "./routes/transactions.js";
 import { AccountService } from "./services/accounts.js";
+import { ReportService } from "./services/reports.js";
 import { TransactionService } from "./services/transactions.js";
 
 export function createApp(db: Database): Express {
@@ -13,12 +15,14 @@ export function createApp(db: Database): Express {
 
   const accounts = new AccountService(db);
   const transactions = new TransactionService(db);
+  const reports = new ReportService(db);
 
   app.get("/health", (_req, res) => {
     res.json({ status: "ok" });
   });
 
   app.use("/accounts/:accountId/transactions", transactionsRouter(transactions));
+  app.use("/accounts/:accountId/reports", reportsRouter(reports));
   app.use("/accounts", accountsRouter(accounts));
 
   app.use((req, _res, next) => {
