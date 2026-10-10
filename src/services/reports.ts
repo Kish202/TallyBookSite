@@ -37,6 +37,18 @@ interface ReportRow {
   category: string;
 }
 
+interface CsvRow {
+  occurred_on: string;
+  category: string;
+  description: string;
+  amount_cents: number;
+}
+
+/** RFC 4180 quoting: wrap in quotes when the value contains a delimiter, quote or newline. */
+function csvField(value: string): string {
+  return /[",\r\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+}
+
 /** Resolve a YYYY-MM month into its first and last calendar day. */
 export function monthRange(month: string): { from: string; to: string } {
   const [yearStr, monthStr] = month.split("-");
@@ -53,11 +65,39 @@ export function monthRange(month: string): { from: string; to: string } {
 export class ReportService {
   constructor(private readonly db: Database) {}
 
-  monthly(accountId: number, query: MonthlyReportQuery): MonthlyReport {
+  private assertAccountExists(accountId: number): void {
     const account = this.db.prepare("SELECT 1 FROM accounts WHERE id = ?").get(accountId);
     if (!account) {
       throw new NotFoundError("Account", accountId);
     }
+  }
+
+  /**
+   * The month's transactions as CSV, oldest first, suitable for importing
+   * into a spreadsheet. Header row: date,category,description,amount.
+   */
+  monthlyCsv(accountId: number, query: MonthlyReportQuery): string {
+    this.assertAccountExists(accountId);
+    const { from, to } = monthRange(query.month);
+    const rows = this.db
+      .prepare(
+        `SELECT occurred_on, category, description, amount_cents FROM transactions
+          WHERE account_id = ? AND occurred_on >= ? AND occurred_on <= ?
+          ORDER BY occurred_on ASC, id ASC`,
+      )
+      .all(accountId, from, to) as unknown as CsvRow[];
+
+    const lines = ["date,category,description,amount"];
+    for (const row of rows) {
+      lines.push(
+        [row.occurred_on, csvField(row.category), csvField(row.description), formatCents(row.amount_cents)].join(","),
+      );
+    }
+    return `${lines.join("\r\n")}\r\n`;
+  }
+
+  monthly(accountId: number, query: MonthlyReportQuery): MonthlyReport {
+    this.assertAccountExists(accountId);
 
     const { from, to } = monthRange(query.month);
     const rows = this.db

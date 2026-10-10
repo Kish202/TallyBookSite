@@ -83,9 +83,11 @@ Responses include pagination metadata:
 | Method | Path                                          | Description                    |
 | ------ | --------------------------------------------- | ------------------------------ |
 | `GET`  | `/accounts/:accountId/reports/monthly?month=` | Monthly summary (`YYYY-MM`)    |
+| `GET`  | `/accounts/:accountId/reports/monthly.csv?month=` | Month's transactions as CSV |
 
 ```bash
 curl 'localhost:3000/accounts/1/reports/monthly?month=2024-03'
+curl -OJ 'localhost:3000/accounts/1/reports/monthly.csv?month=2024-03'   # saves report-2024-03.csv
 ```
 
 ```json

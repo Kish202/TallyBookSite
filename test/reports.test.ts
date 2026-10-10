@@ -50,6 +50,22 @@ describe("GET /accounts/:accountId/reports/monthly", () => {
     ]);
   });
 
+  it("exports the month as CSV with proper quoting", async () => {
+    await server.request(
+      "/accounts/1/transactions",
+      post({ amount: "-9.99", category: "food", description: 'Dinner, "The Oak"', occurredOn: "2024-03-05" }),
+    );
+    const res = await server.request("/accounts/1/reports/monthly.csv?month=2024-03");
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toContain("text/csv");
+    expect(res.headers.get("content-disposition")).toBe('attachment; filename="report-2024-03.csv"');
+    const lines = (await res.text()).split("\r\n");
+    expect(lines[0]).toBe("date,category,description,amount");
+    expect(lines[1]).toBe("2024-03-01,salary,,3000.00");
+    expect(lines[3]).toBe('2024-03-05,food,"Dinner, ""The Oak""",-9.99');
+    expect(lines).toHaveLength(7); // header + 5 rows + trailing newline
+  });
+
   it("rejects a malformed month", async () => {
     const { status } = await server.json("/accounts/1/reports/monthly?month=March");
     expect(status).toBe(400);
