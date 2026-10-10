@@ -29,6 +29,7 @@ const SCHEMA = `
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     label       TEXT    NOT NULL,
     key         TEXT    NOT NULL UNIQUE,
+    account_id  INTEGER REFERENCES accounts(id) ON DELETE CASCADE,  -- NULL = all accounts
     revoked     INTEGER NOT NULL DEFAULT 0,
     last_used_at TEXT,
     created_at  TEXT    NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))

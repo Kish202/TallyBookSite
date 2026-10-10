@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { extractBearerToken } from "../src/middleware/auth.js";
-import { post, startTestServer, type TestServer } from "./helpers.js";
+import { patch, post, startTestServer, type TestServer } from "./helpers.js";
 
 let server: TestServer;
 
@@ -90,5 +90,63 @@ describe("API key authentication", () => {
   it("leaves /health open", async () => {
     const { status } = await server.json("/health", { headers: { authorization: "" } });
     expect(status).toBe(200);
+  });
+
+  it("accepts the key as an api_key query parameter", async () => {
+    const { status } = await server.json(`/accounts?api_key=${server.apiKey}`, {
+      headers: { authorization: "" },
+    });
+    expect(status).toBe(200);
+  });
+
+  it("answers CORS preflight and echoes the origin", async () => {
+    const res = await server.request("/accounts", {
+      method: "OPTIONS",
+      headers: { origin: "https://dashboard.example", authorization: "" },
+    });
+    expect(res.status).toBe(204);
+    expect(res.headers.get("access-control-allow-origin")).toBe("https://dashboard.example");
+    expect(res.headers.get("access-control-allow-headers")).toContain("Authorization");
+  });
+});
+
+describe("account-scoped keys", () => {
+  let scopedKey: string;
+
+  beforeEach(async () => {
+    await server.request("/accounts", post({ name: "Mine", currency: "USD" }));
+    await server.request("/accounts", post({ name: "Theirs", currency: "USD" }));
+    const created = await server.json<{ key: string; accountId: number }>(
+      "/auth/keys",
+      post({ label: "scoped", accountId: 1 }),
+    );
+    expect(created.body.accountId).toBe(1);
+    scopedKey = created.body.key;
+  });
+
+  const asScoped = (path: string, init: RequestInit = {}) =>
+    server.json(path, { ...init, headers: { ...(init.headers as Record<string, string>), authorization: `Bearer ${scopedKey}` } });
+
+  it("rejects scoping to an unknown account", async () => {
+    const { status } = await server.json("/auth/keys", post({ label: "x", accountId: 99 }));
+    expect(status).toBe(404);
+  });
+
+  it("only lists the scoped account", async () => {
+    const { body } = await asScoped("/accounts");
+    expect((body as { items: Array<{ id: number }> }).items.map((a) => a.id)).toEqual([1]);
+  });
+
+  it("can read its own account but not others", async () => {
+    expect((await asScoped("/accounts/1")).status).toBe(200);
+    const denied = await asScoped("/accounts/2");
+    expect(denied.status).toBe(403);
+    expect(denied.body).toEqual({ error: "API key is not permitted to access this account" });
+  });
+
+  it("cannot update, delete or create accounts outside its scope", async () => {
+    expect((await asScoped("/accounts/2", patch({ name: "Hijacked" }))).status).toBe(403);
+    expect((await asScoped("/accounts/2", { method: "DELETE" })).status).toBe(403);
+    expect((await asScoped("/accounts", post({ name: "New", currency: "USD" }))).status).toBe(403);
   });
 });

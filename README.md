@@ -45,9 +45,16 @@ The secret is only returned in the creation response.
 
 | Method   | Path             | Description                                   |
 | -------- | ---------------- | --------------------------------------------- |
-| `POST`   | `/auth/keys`     | Create a key `{ "label": "ci" }` → `{ key }`   |
+| `POST`   | `/auth/keys`     | Create a key `{ "label": "ci", "accountId"?: 1 }` → `{ key }` |
 | `GET`    | `/auth/keys`     | List keys (without secrets)                   |
 | `DELETE` | `/auth/keys/:id` | Revoke a key                                  |
+
+Pass `accountId` when creating a key to restrict it to a single account: a
+scoped key only sees that account in `GET /accounts` and gets `403` on any
+other account. Keys without a scope can access everything.
+
+Clients that cannot set headers (browser download links, webhook receivers)
+may pass the key as `?api_key=...` instead.
 
 Set `ADMIN_TOKEN` to configure a break-glass token that always authenticates.
 

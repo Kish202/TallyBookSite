@@ -4,6 +4,8 @@ import { HttpError, NotFoundError } from "../errors.js";
 
 export const createApiKeySchema = z.object({
   label: z.string().trim().min(1).max(60),
+  /** Restrict the key to a single account. Omit for a key that can see every account. */
+  accountId: z.number().int().positive().optional(),
 });
 
 export type CreateApiKeyInput = z.infer<typeof createApiKeySchema>;
@@ -11,6 +13,8 @@ export type CreateApiKeyInput = z.infer<typeof createApiKeySchema>;
 export interface ApiKey {
   id: number;
   label: string;
+  /** When set, the key may only access this account. */
+  accountId: number | null;
   revoked: boolean;
   lastUsedAt: string | null;
   createdAt: string;
@@ -25,6 +29,7 @@ interface ApiKeyRow {
   id: number;
   label: string;
   key: string;
+  account_id: number | null;
   revoked: number;
   last_used_at: string | null;
   created_at: string;
@@ -44,6 +49,7 @@ function toApiKey(row: ApiKeyRow): ApiKey {
   return {
     id: row.id,
     label: row.label,
+    accountId: row.account_id,
     revoked: row.revoked === 1,
     lastUsedAt: row.last_used_at,
     createdAt: row.created_at,
@@ -65,10 +71,16 @@ export class ApiKeyService {
   }
 
   create(input: CreateApiKeyInput): ApiKeyWithSecret {
+    if (input.accountId !== undefined) {
+      const exists = this.db.prepare("SELECT 1 FROM accounts WHERE id = ?").get(input.accountId);
+      if (!exists) {
+        throw new NotFoundError("Account", input.accountId);
+      }
+    }
     const key = generateKey();
     const result = this.db
-      .prepare("INSERT INTO api_keys (label, key) VALUES (?, ?)")
-      .run(input.label, key);
+      .prepare("INSERT INTO api_keys (label, key, account_id) VALUES (?, ?, ?)")
+      .run(input.label, key, input.accountId ?? null);
     const row = this.db
       .prepare("SELECT * FROM api_keys WHERE id = ?")
       .get(Number(result.lastInsertRowid)) as unknown as ApiKeyRow;
