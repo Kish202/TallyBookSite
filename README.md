@@ -9,7 +9,7 @@ native dependencies to compile.
 
 ## Requirements
 
-- Node.js 22.13 or newer (for the built-in SQLite module)
+- Node.js 20 or newer (for the built-in SQLite module)
 
 ## Getting started
 
@@ -113,8 +113,8 @@ test/               vitest suites (HTTP-level, in-memory sqlite)
 
 ## Contributing
 
-Pull requests are welcome. Please keep changes focused, add tests for new
-behaviour, and make sure `npm test` and `npm run typecheck` pass.
+Pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the
+development setup, architecture overview and conventions.
 
 ## License
 
