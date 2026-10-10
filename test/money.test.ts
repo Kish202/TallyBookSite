@@ -10,11 +10,14 @@ describe("parseCents", () => {
     ["-0.01", -1],
     ["-100", -10000],
     ["0.99", 99],
+    ["1,234.56", 123456],
+    ["-1,000", -100000],
+    ["12,345,678.90", 1234567890],
   ])("parses %s to %d", (input, expected) => {
     expect(parseCents(input)).toBe(expected);
   });
 
-  it.each(["", "abc", "1.234", "1,000", "$5", " 5", "5 ", "1e3", ".5", "5.", "+5", "NaN"])(
+  it.each(["", "abc", "1.234", "$5", " 5", "5 ", "1e3", ".5", "5.", "+5", "NaN"])(
     "rejects %j",
     (input) => {
       expect(() => parseCents(input)).toThrow(MoneyParseError);
@@ -39,13 +42,14 @@ describe("formatCents", () => {
   });
 
   it("round-trips with parseCents", () => {
-    for (const value of ["0.00", "19.99", "-3.50", "1000000.01"]) {
+    for (const value of ["0.00", "19.99", "-3.50", "1000000.01", "70368744177664.93"]) {
       expect(formatCents(parseCents(value))).toBe(value);
     }
   });
 
   it("rejects non-integers", () => {
     expect(() => formatCents(1.5)).toThrow(TypeError);
+    expect(() => formatCents(Number.NaN)).toThrow(TypeError);
   });
 });
 

@@ -35,10 +35,22 @@ export const createTransactionSchema = z.object({
   occurredOn: isoDate,
 });
 
+export const SORT_FIELDS = ["occurredOn", "amount", "createdAt"] as const;
+export type SortField = (typeof SORT_FIELDS)[number];
+
+/** Maps public sort field names to their column expressions. */
+const SORT_COLUMNS: Record<SortField, string> = {
+  occurredOn: "occurred_on",
+  amount: "amount_cents",
+  createdAt: "created_at",
+};
+
 export const listTransactionsQuerySchema = paginationQuerySchema.extend({
   category: z.string().trim().min(1).max(40).optional(),
   from: isoDate.optional(),
   to: isoDate.optional(),
+  sort: z.enum(SORT_FIELDS).default("occurredOn"),
+  order: z.enum(["asc", "desc"]).default("desc"),
 });
 
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
@@ -113,10 +125,15 @@ export class TransactionService {
       }
     ).count;
 
+    // Sort column and direction come from a closed enum validated by zod, so
+    // interpolating them here is safe. `id` breaks ties so pages are stable.
+    const direction = query.order.toUpperCase();
+    const orderSql = `${SORT_COLUMNS[query.sort]} ${direction}, id ${direction}`;
+
     const rows = this.db
       .prepare(
         `SELECT * FROM transactions WHERE ${whereSql}
-          ORDER BY occurred_on DESC, id DESC
+          ORDER BY ${orderSql}
           LIMIT ? OFFSET ?`,
       )
       .all(...params, query.limit, query.offset) as unknown as TransactionRow[];

@@ -89,9 +89,36 @@ describe("GET /accounts/:accountId/transactions", () => {
     expect(page2.body.nextOffset).toBeNull();
   });
 
-  it("caps the page size", async () => {
-    const { status } = await server.json("/accounts/1/transactions?limit=1000");
+  it("sorts by amount ascending when asked", async () => {
+    const { body } = await server.json<Page<Transaction>>(
+      "/accounts/1/transactions?sort=amount&order=asc",
+    );
+    expect(body.items.map((t) => t.amount)).toEqual(["-30.00", "-20.00", "-10.00", "500.00"]);
+  });
+
+  it("rejects unknown sort fields", async () => {
+    const { status } = await server.json("/accounts/1/transactions?sort=id;DROP");
     expect(status).toBe(400);
+  });
+
+  it("caps the page size", async () => {
+    expect((await server.json("/accounts/1/transactions?limit=500")).status).toBe(200);
+    expect((await server.json("/accounts/1/transactions?limit=501")).status).toBe(400);
+  });
+
+  it("keeps pages stable when sorting by a column with ties", async () => {
+    // Four more -10.00 rows: ties on amount must not duplicate or skip across pages.
+    for (let i = 0; i < 4; i += 1) await tx("-10.00", "food", "2024-03-05");
+    const seen = new Set<number>();
+    let offset: number | null = 0;
+    while (offset !== null) {
+      const { body } = await server.json<Page<Transaction>>(
+        `/accounts/1/transactions?sort=amount&order=asc&limit=3&offset=${offset}`,
+      );
+      for (const t of body.items) seen.add(t.id);
+      offset = body.nextOffset;
+    }
+    expect(seen.size).toBe(8);
   });
 
   it("filters by category", async () => {
@@ -127,6 +154,12 @@ describe("GET/DELETE /accounts/:accountId/transactions/:id", () => {
     await server.request("/accounts", post({ name: "Other", currency: "USD" }));
     expect((await server.json("/accounts/2/transactions/1")).status).toBe(404);
     const del = await server.request("/accounts/2/transactions/1", { method: "DELETE" });
+    expect(del.status).toBe(404);
+    expect((await server.json("/accounts/1/transactions/1")).status).toBe(200);
+  });
+
+  it("returns 404 when deleting a transaction that does not exist", async () => {
+    const del = await server.request("/accounts/1/transactions/99", { method: "DELETE" });
     expect(del.status).toBe(404);
   });
 

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-export const MAX_PAGE_SIZE = 100;
+/** Large enough for export clients to page through history quickly. */
+export const MAX_PAGE_SIZE = 500;
 export const DEFAULT_PAGE_SIZE = 20;
 
 export const paginationQuerySchema = z.object({

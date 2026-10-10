@@ -18,12 +18,13 @@ export class MoneyParseError extends Error {
 /**
  * Parse a decimal string into integer cents.
  *
- * Accepts up to two fractional digits. Rejects anything else (including
- * exponents, thousands separators, currency symbols or trailing whitespace)
- * so that callers never silently lose precision.
+ * Accepts up to two fractional digits and optional thousands separators
+ * ("1,234.56"), which spreadsheet exports commonly include. Rejects anything
+ * else (exponents, currency symbols, whitespace) so that callers never
+ * silently lose precision.
  */
 export function parseCents(input: string): number {
-  const match = DECIMAL_RE.exec(input);
+  const match = DECIMAL_RE.exec(input.replace(/,/g, ""));
   if (!match) {
     throw new MoneyParseError(input);
   }
@@ -42,9 +43,7 @@ export function formatCents(cents: number): string {
   }
   const sign = cents < 0 ? "-" : "";
   const abs = Math.abs(cents);
-  const whole = Math.floor(abs / 100);
-  const fraction = String(abs % 100).padStart(2, "0");
-  return `${sign}${whole}.${fraction}`;
+  return `${sign}${Math.floor(abs / 100)}.${String(abs % 100).padStart(2, "0")}`;
 }
 
 /** Sum a list of integer cent values, guarding against overflow. */
