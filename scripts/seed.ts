@@ -28,21 +28,32 @@ if (!fixturePath) {
 const fixture = JSON.parse(readFileSync(fixturePath, "utf8")) as { accounts: SeedAccount[] };
 const db = openDatabase(dbPath);
 
-const insertAccount = db.prepare("INSERT INTO accounts (name, currency) VALUES (?, ?)");
+// Re-running the seed must not fail on accounts that already exist.
+const insertAccount = db.prepare("INSERT OR IGNORE INTO accounts (name, currency) VALUES (?, ?)");
 const insertTx = db.prepare(
   `INSERT INTO transactions (account_id, amount_cents, category, description, occurred_on)
    VALUES (?, ?, ?, ?, ?)`,
 );
 
+/** Fixture amounts are decimals with at most two places; round to avoid float noise. */
+const toCents = (amount: number): number => Math.round(amount * 100);
+
 let txCount = 0;
-for (const account of fixture.accounts) {
-  const { lastInsertRowid } = insertAccount.run(account.name, account.currency);
-  for (const tx of account.transactions) {
-    const cents = Math.floor(tx.amount * 100);
-    insertTx.run(lastInsertRowid, cents, tx.category, tx.description, tx.occurredOn);
-    txCount += 1;
+db.exec("BEGIN");
+try {
+  for (const account of fixture.accounts) {
+    const { lastInsertRowid } = insertAccount.run(account.name, account.currency);
+    for (const tx of account.transactions) {
+      insertTx.run(lastInsertRowid, toCents(tx.amount), tx.category, tx.description, tx.occurredOn);
+      txCount += 1;
+    }
   }
+  db.exec("COMMIT");
+} catch (err) {
+  db.exec("ROLLBACK");
+  throw err;
+} finally {
+  db.close();
 }
 
 console.log(`Seeded ${fixture.accounts.length} accounts and ${txCount} transactions into ${dbPath}`);
-db.close();

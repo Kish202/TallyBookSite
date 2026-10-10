@@ -31,8 +31,13 @@ npm run fixture:generate        # regenerate the fixture (deterministic)
 ### Docker
 
 ```bash
-docker compose up --build       # API on http://localhost:3000, data in ./data
+docker compose up --build       # API on http://localhost:3000
 ```
+
+The image runs as the unprivileged `node` user, stores the database in the
+`tallybook-data` named volume, and reports health via `GET /health`. Stopping
+the container triggers the graceful shutdown in `src/index.ts`, which closes
+the database cleanly.
 
 Configuration is via environment variables:
 

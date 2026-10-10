@@ -7,5 +7,9 @@ services:
       PORT: 3000
       DATABASE_PATH: /data/tallybook.db
     volumes:
-      - ./data:/app/data
+      - tallybook-data:/data
     restart: unless-stopped
+    stop_grace_period: 10s
+
+volumes:
+  tallybook-data:
