@@ -21,6 +21,19 @@ npm run typecheck    # type-check without emitting
 npm run build && npm start
 ```
 
+To populate a database with realistic sample data:
+
+```bash
+npm run seed                    # seeds tallybook.db from test/fixtures/seed.json
+npm run fixture:generate        # regenerate the fixture (deterministic)
+```
+
+### Docker
+
+```bash
+docker compose up --build       # API on http://localhost:3000, data in ./data
+```
+
 Configuration is via environment variables:
 
 | Variable        | Default       | Description                              |

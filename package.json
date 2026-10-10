@@ -14,7 +14,9 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "NODE_OPTIONS=--no-warnings=ExperimentalWarning vitest run",
-    "test:watch": "NODE_OPTIONS=--no-warnings=ExperimentalWarning vitest"
+    "test:watch": "NODE_OPTIONS=--no-warnings=ExperimentalWarning vitest",
+    "seed": "NODE_OPTIONS=--no-warnings=ExperimentalWarning tsx scripts/seed.ts test/fixtures/seed.json",
+    "fixture:generate": "NODE_OPTIONS=--no-warnings=ExperimentalWarning tsx scripts/generate-fixture.ts > test/fixtures/seed.json"
   },
   "dependencies": {
     "express": "^4.21.2",

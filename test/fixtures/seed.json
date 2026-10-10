@@ -1,0 +1,1210 @@
+{
+  "accounts": [
+    {
+      "name": "Checking",
+      "currency": "USD",
+      "transactions": [
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-01-01"
+        },
+        {
+          "amount": -64.13,
+          "category": "utilities",
+          "description": "Internet",
+          "occurredOn": "2024-01-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-02"
+        },
+        {
+          "amount": -59.78,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-01-03"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-03"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-05"
+        },
+        {
+          "amount": -28.61,
+          "category": "food",
+          "description": "Coffee",
+          "occurredOn": "2024-01-05"
+        },
+        {
+          "amount": -38.07,
+          "category": "entertainment",
+          "description": "Streaming",
+          "occurredOn": "2024-01-07"
+        },
+        {
+          "amount": -47.98,
+          "category": "transport",
+          "description": "Taxi",
+          "occurredOn": "2024-01-08"
+        },
+        {
+          "amount": -20.06,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-01-11"
+        },
+        {
+          "amount": -2.02,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-01-11"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-15"
+        },
+        {
+          "amount": 80.23,
+          "category": "refund",
+          "description": "Online order refund",
+          "occurredOn": "2024-01-16"
+        },
+        {
+          "amount": -48.19,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-01-17"
+        },
+        {
+          "amount": -81.27,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-01-18"
+        },
+        {
+          "amount": -45.87,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-01-18"
+        },
+        {
+          "amount": -22.05,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-01-19"
+        },
+        {
+          "amount": -81.72,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-01-26"
+        },
+        {
+          "amount": -18.85,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-01-28"
+        },
+        {
+          "amount": -4.52,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-01-28"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-02-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-02-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-02-02"
+        },
+        {
+          "amount": -88.91,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-02-03"
+        },
+        {
+          "amount": -56.52,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-02-04"
+        },
+        {
+          "amount": -93.86,
+          "category": "utilities",
+          "description": "Electricity",
+          "occurredOn": "2024-02-05"
+        },
+        {
+          "amount": -54.89,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-02-05"
+        },
+        {
+          "amount": 16.16,
+          "category": "refund",
+          "description": "Online order refund",
+          "occurredOn": "2024-02-06"
+        },
+        {
+          "amount": -99.71000000000001,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-02-07"
+        },
+        {
+          "amount": -75.42,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-02-08"
+        },
+        {
+          "amount": -37.96,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-02-08"
+        },
+        {
+          "amount": -108.47,
+          "category": "utilities",
+          "description": "Electricity",
+          "occurredOn": "2024-02-10"
+        },
+        {
+          "amount": -92.13,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-02-10"
+        },
+        {
+          "amount": 670.22,
+          "category": "freelance",
+          "description": "Invoice #1042",
+          "occurredOn": "2024-02-13"
+        },
+        {
+          "amount": -92.71000000000001,
+          "category": "utilities",
+          "description": "Electricity",
+          "occurredOn": "2024-02-17"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-02-19"
+        },
+        {
+          "amount": -8.39,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-02-26"
+        },
+        {
+          "amount": -114.64,
+          "category": "utilities",
+          "description": "Electricity",
+          "occurredOn": "2024-02-28"
+        },
+        {
+          "amount": -99.08,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-02-29"
+        },
+        {
+          "amount": -83.51,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-02-29"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-03-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-02"
+        },
+        {
+          "amount": 590.9100000000001,
+          "category": "freelance",
+          "description": "Invoice #1042",
+          "occurredOn": "2024-03-03"
+        },
+        {
+          "amount": -15.45,
+          "category": "food",
+          "description": "Coffee",
+          "occurredOn": "2024-03-06"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-07"
+        },
+        {
+          "amount": -51.84,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-03-12"
+        },
+        {
+          "amount": -83.13,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-03-16"
+        },
+        {
+          "amount": 328.93,
+          "category": "freelance",
+          "description": "Design work",
+          "occurredOn": "2024-03-17"
+        },
+        {
+          "amount": -7.44,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-03-21"
+        },
+        {
+          "amount": 76.49,
+          "category": "refund",
+          "description": "Online order refund",
+          "occurredOn": "2024-03-22"
+        },
+        {
+          "amount": -52.03,
+          "category": "entertainment",
+          "description": "Concert tickets",
+          "occurredOn": "2024-03-25"
+        },
+        {
+          "amount": -29.28,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-03-26"
+        },
+        {
+          "amount": -17,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-03-27"
+        },
+        {
+          "amount": 456.90999999999997,
+          "category": "freelance",
+          "description": "Design work",
+          "occurredOn": "2024-03-27"
+        },
+        {
+          "amount": -27.32,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-03-28"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-29"
+        },
+        {
+          "amount": -91.43,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-03-31"
+        },
+        {
+          "amount": -74.42,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-03-31"
+        },
+        {
+          "amount": -94.34,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-03-31"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-04-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-04-02"
+        },
+        {
+          "amount": 47.05,
+          "category": "refund",
+          "description": "Online order refund",
+          "occurredOn": "2024-04-02"
+        },
+        {
+          "amount": -4.5,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-04-02"
+        },
+        {
+          "amount": -76.81,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-04-04"
+        },
+        {
+          "amount": -44.45,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-04-06"
+        },
+        {
+          "amount": -30.58,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-04-06"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-04-09"
+        },
+        {
+          "amount": -54.38,
+          "category": "utilities",
+          "description": "Internet",
+          "occurredOn": "2024-04-10"
+        },
+        {
+          "amount": -68.51,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-04-10"
+        },
+        {
+          "amount": -76.92,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-04-12"
+        },
+        {
+          "amount": -3.5700000000000003,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-04-12"
+        },
+        {
+          "amount": -12.86,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-04-13"
+        },
+        {
+          "amount": -45.68,
+          "category": "utilities",
+          "description": "Electricity",
+          "occurredOn": "2024-04-14"
+        },
+        {
+          "amount": -97.57,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-04-17"
+        },
+        {
+          "amount": -64.94,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-04-22"
+        },
+        {
+          "amount": -8.33,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-04-24"
+        },
+        {
+          "amount": -92.43,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-04-25"
+        },
+        {
+          "amount": -93.38,
+          "category": "food",
+          "description": "Takeaway",
+          "occurredOn": "2024-04-26"
+        },
+        {
+          "amount": 742.8299999999999,
+          "category": "freelance",
+          "description": "Design work",
+          "occurredOn": "2024-04-29"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-05-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-02"
+        },
+        {
+          "amount": -49.7,
+          "category": "food",
+          "description": "Takeaway",
+          "occurredOn": "2024-05-03"
+        },
+        {
+          "amount": -51.42,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-05-03"
+        },
+        {
+          "amount": -66.44,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-05-04"
+        },
+        {
+          "amount": 289.4,
+          "category": "freelance",
+          "description": "Invoice #1042",
+          "occurredOn": "2024-05-05"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-09"
+        },
+        {
+          "amount": -24.15,
+          "category": "transport",
+          "description": "Taxi",
+          "occurredOn": "2024-05-13"
+        },
+        {
+          "amount": -67.33,
+          "category": "entertainment",
+          "description": "Concert tickets",
+          "occurredOn": "2024-05-13"
+        },
+        {
+          "amount": -85.72,
+          "category": "entertainment",
+          "description": "Streaming",
+          "occurredOn": "2024-05-15"
+        },
+        {
+          "amount": -42.13,
+          "category": "transport",
+          "description": "Taxi",
+          "occurredOn": "2024-05-19"
+        },
+        {
+          "amount": -16.09,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-05-20"
+        },
+        {
+          "amount": -97.11,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-05-21"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-05-22"
+        },
+        {
+          "amount": -86.64,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-05-23"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-24"
+        },
+        {
+          "amount": -45.62,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-05-28"
+        },
+        {
+          "amount": -6.56,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-05-28"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-29"
+        },
+        {
+          "amount": -97.09,
+          "category": "food",
+          "description": "Takeaway",
+          "occurredOn": "2024-05-29"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-06-01"
+        },
+        {
+          "amount": -30.46,
+          "category": "entertainment",
+          "description": "Streaming",
+          "occurredOn": "2024-06-01"
+        },
+        {
+          "amount": -79.39,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-06-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-02"
+        },
+        {
+          "amount": -53.75,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-06-02"
+        },
+        {
+          "amount": -85.84,
+          "category": "entertainment",
+          "description": "Streaming",
+          "occurredOn": "2024-06-03"
+        },
+        {
+          "amount": -47.16,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-06-04"
+        },
+        {
+          "amount": -93.59,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-06-08"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-09"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-11"
+        },
+        {
+          "amount": -71.77,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-06-15"
+        },
+        {
+          "amount": -20.81,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-06-15"
+        },
+        {
+          "amount": -78.68,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-06-15"
+        },
+        {
+          "amount": -13.12,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-06-16"
+        },
+        {
+          "amount": -4.3100000000000005,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-06-18"
+        },
+        {
+          "amount": -86.72,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-06-19"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-22"
+        },
+        {
+          "amount": -26.93,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-06-22"
+        },
+        {
+          "amount": -102.19,
+          "category": "utilities",
+          "description": "Internet",
+          "occurredOn": "2024-06-25"
+        },
+        {
+          "amount": -39.13,
+          "category": "transport",
+          "description": "Taxi",
+          "occurredOn": "2024-06-28"
+        }
+      ]
+    },
+    {
+      "name": "Savings",
+      "currency": "USD",
+      "transactions": [
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-01-01"
+        },
+        {
+          "amount": -84.75,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-01-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-02"
+        },
+        {
+          "amount": -87.04,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-01-09"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-25"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-02-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-02-02"
+        },
+        {
+          "amount": -24.34,
+          "category": "entertainment",
+          "description": "Streaming",
+          "occurredOn": "2024-02-15"
+        },
+        {
+          "amount": -77.01,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-02-23"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-02-28"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-03-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-02"
+        },
+        {
+          "amount": -24,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-03-16"
+        },
+        {
+          "amount": -92.94,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-03-18"
+        },
+        {
+          "amount": -82.02,
+          "category": "food",
+          "description": "Coffee",
+          "occurredOn": "2024-03-20"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-04-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-04-02"
+        },
+        {
+          "amount": -62.38,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-04-11"
+        },
+        {
+          "amount": -12.86,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-04-12"
+        },
+        {
+          "amount": -91.51,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-04-30"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-05-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-02"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-05-07"
+        },
+        {
+          "amount": -40.85,
+          "category": "entertainment",
+          "description": "Concert tickets",
+          "occurredOn": "2024-05-09"
+        },
+        {
+          "amount": -60.37,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-05-31"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-06-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-02"
+        },
+        {
+          "amount": 354.15,
+          "category": "freelance",
+          "description": "Invoice #1042",
+          "occurredOn": "2024-06-03"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-08"
+        },
+        {
+          "amount": -20.35,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-06-23"
+        }
+      ]
+    },
+    {
+      "name": "Travel",
+      "currency": "EUR",
+      "transactions": [
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-01-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-02"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-06"
+        },
+        {
+          "amount": -92.13,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-01-20"
+        },
+        {
+          "amount": -90.24,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-01-23"
+        },
+        {
+          "amount": -9.46,
+          "category": "entertainment",
+          "description": "Streaming",
+          "occurredOn": "2024-01-29"
+        },
+        {
+          "amount": -84.8,
+          "category": "entertainment",
+          "description": "Concert tickets",
+          "occurredOn": "2024-01-31"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-01-31"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-02-01"
+        },
+        {
+          "amount": -58.42,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-02-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-02-02"
+        },
+        {
+          "amount": -68.75,
+          "category": "food",
+          "description": "Lunch",
+          "occurredOn": "2024-02-03"
+        },
+        {
+          "amount": -35.32,
+          "category": "food",
+          "description": "Takeaway",
+          "occurredOn": "2024-02-05"
+        },
+        {
+          "amount": -35.55,
+          "category": "entertainment",
+          "description": "Streaming",
+          "occurredOn": "2024-02-18"
+        },
+        {
+          "amount": -77.34,
+          "category": "transport",
+          "description": "Taxi",
+          "occurredOn": "2024-02-27"
+        },
+        {
+          "amount": -60.46,
+          "category": "health",
+          "description": "Gym membership",
+          "occurredOn": "2024-02-29"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-03-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-02"
+        },
+        {
+          "amount": -18.43,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-03-04"
+        },
+        {
+          "amount": -57.82,
+          "category": "transport",
+          "description": "Fuel",
+          "occurredOn": "2024-03-06"
+        },
+        {
+          "amount": -70.91,
+          "category": "transport",
+          "description": "Metro pass",
+          "occurredOn": "2024-03-13"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-20"
+        },
+        {
+          "amount": -43.65,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-03-22"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-03-28"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-04-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-04-02"
+        },
+        {
+          "amount": -65.26,
+          "category": "utilities",
+          "description": "Electricity",
+          "occurredOn": "2024-04-06"
+        },
+        {
+          "amount": -91.94,
+          "category": "food",
+          "description": "Coffee",
+          "occurredOn": "2024-04-10"
+        },
+        {
+          "amount": -73.64,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-04-16"
+        },
+        {
+          "amount": -45.730000000000004,
+          "category": "utilities",
+          "description": "Internet",
+          "occurredOn": "2024-04-19"
+        },
+        {
+          "amount": -117.25,
+          "category": "utilities",
+          "description": "Electricity",
+          "occurredOn": "2024-04-26"
+        },
+        {
+          "amount": -5.04,
+          "category": "food",
+          "description": "Coffee",
+          "occurredOn": "2024-04-29"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-05-01"
+        },
+        {
+          "amount": -90.64,
+          "category": "utilities",
+          "description": "Internet",
+          "occurredOn": "2024-05-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-02"
+        },
+        {
+          "amount": -56.77,
+          "category": "health",
+          "description": "Pharmacy",
+          "occurredOn": "2024-05-13"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-15"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-18"
+        },
+        {
+          "amount": -84.22,
+          "category": "utilities",
+          "description": "Water",
+          "occurredOn": "2024-05-26"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-05-30"
+        },
+        {
+          "amount": 3200,
+          "category": "salary",
+          "description": "Monthly salary",
+          "occurredOn": "2024-06-01"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-02"
+        },
+        {
+          "amount": -41.6,
+          "category": "transport",
+          "description": "Taxi",
+          "occurredOn": "2024-06-10"
+        },
+        {
+          "amount": -3.74,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-06-10"
+        },
+        {
+          "amount": -88.12,
+          "category": "food",
+          "description": "Groceries",
+          "occurredOn": "2024-06-12"
+        },
+        {
+          "amount": -35.71,
+          "category": "entertainment",
+          "description": "Cinema",
+          "occurredOn": "2024-06-12"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-15"
+        },
+        {
+          "amount": -1200,
+          "category": "rent",
+          "description": "Monthly rent",
+          "occurredOn": "2024-06-27"
+        }
+      ]
+    }
+  ]
+}
