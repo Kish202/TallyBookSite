@@ -2,6 +2,7 @@ import { Router } from "express";
 import type { TransactionService } from "../services/transactions.js";
 import {
   createTransactionSchema,
+  importTransactionsSchema,
   listTransactionsQuerySchema,
 } from "../services/transactions.js";
 import { idParam } from "./accounts.js";
@@ -27,6 +28,13 @@ export function transactionsRouter(transactions: TransactionService): Router {
       .status(201)
       .location(`/accounts/${accountId}/transactions/${created.id}`)
       .json(created);
+  });
+
+  router.post<AccountParams>("/import", (req, res) => {
+    const accountId = idParam.parse(req.params.accountId);
+    const input = importTransactionsSchema.parse(req.body);
+    const result = transactions.importMany(accountId, input);
+    res.status(201).json(result);
   });
 
   router.get<TransactionParams>("/:id", (req, res) => {

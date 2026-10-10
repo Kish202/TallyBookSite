@@ -56,6 +56,7 @@ curl -X POST localhost:3000/accounts \
 | -------- | -------------------------------------- | -------------------------------- |
 | `GET`    | `/accounts/:accountId/transactions`     | List (newest first, paginated)   |
 | `POST`   | `/accounts/:accountId/transactions`     | Record a transaction             |
+| `POST`   | `/accounts/:accountId/transactions/import` | Bulk-import many transactions |
 | `GET`    | `/accounts/:accountId/transactions/:id` | Fetch one transaction            |
 | `DELETE` | `/accounts/:accountId/transactions/:id` | Delete a transaction             |
 
@@ -65,6 +66,22 @@ inclusive `from` / `to` date range:
 ```bash
 curl 'localhost:3000/accounts/1/transactions?category=food&from=2024-03-01&to=2024-03-31&limit=50'
 ```
+
+Bulk import accepts up to 500 rows in one request and inserts them atomically
+(the whole batch is rolled back if any row is rejected):
+
+```bash
+curl -X POST localhost:3000/accounts/1/transactions/import \
+  -H 'content-type: application/json' \
+  -d '{"transactions":[
+        {"amount":"-10.00","category":"food","occurredOn":"2024-03-01"},
+        {"amount":"200.00","category":"salary","occurredOn":"2024-03-03"}
+      ]}'
+# => {"imported":2}
+```
+
+Each row takes the same fields as a single create. A combined export spanning
+several accounts can be re-imported by including a per-row `accountId`.
 
 Responses include pagination metadata:
 

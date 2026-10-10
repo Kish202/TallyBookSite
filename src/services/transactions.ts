@@ -41,8 +41,22 @@ export const listTransactionsQuerySchema = paginationQuerySchema.extend({
   to: isoDate.optional(),
 });
 
+/**
+ * A single row in a bulk import. Mirrors the create payload but also accepts an
+ * optional `accountId` so a combined multi-account export can be re-imported in
+ * one call; when omitted the account from the URL is used.
+ */
+export const importTransactionItemSchema = createTransactionSchema.extend({
+  accountId: z.coerce.number().int().positive().optional(),
+});
+
+export const importTransactionsSchema = z.object({
+  transactions: z.array(importTransactionItemSchema).min(1).max(500),
+});
+
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 export type ListTransactionsQuery = z.infer<typeof listTransactionsQuerySchema>;
+export type ImportTransactionsInput = z.infer<typeof importTransactionsSchema>;
 
 export interface Transaction {
   id: number;
@@ -143,6 +157,30 @@ export class TransactionService {
       )
       .run(accountId, input.amount, input.category, input.description, input.occurredOn);
     return this.get(accountId, Number(result.lastInsertRowid));
+  }
+
+  importMany(accountId: number, input: ImportTransactionsInput): { imported: number } {
+    this.assertAccountExists(accountId);
+
+    const insert = this.db.prepare(
+      `INSERT INTO transactions (account_id, amount_cents, category, description, occurred_on)
+       VALUES (?, ?, ?, ?, ?)`,
+    );
+
+    this.db.exec("BEGIN");
+    try {
+      let imported = 0;
+      for (const item of input.transactions) {
+        const targetAccountId = item.accountId ?? accountId;
+        insert.run(targetAccountId, item.amount, item.category, item.description, item.occurredOn);
+        imported += 1;
+      }
+      this.db.exec("COMMIT");
+      return { imported };
+    } catch (err) {
+      this.db.exec("ROLLBACK");
+      throw err;
+    }
   }
 
   remove(accountId: number, id: number): void {

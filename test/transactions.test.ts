@@ -114,6 +114,59 @@ describe("GET /accounts/:accountId/transactions", () => {
   });
 });
 
+describe("POST /accounts/:accountId/transactions/import", () => {
+  it("bulk-imports transactions into the account and returns a count", async () => {
+    const { status, body } = await server.json<{ imported: number }>(
+      "/accounts/1/transactions/import",
+      post({
+        transactions: [
+          { amount: "-10.00", category: "food", occurredOn: "2024-03-01", description: "Groceries" },
+          { amount: "-5.50", category: "transport", occurredOn: "2024-03-02" },
+          { amount: "200.00", category: "salary", occurredOn: "2024-03-03" },
+        ],
+      }),
+    );
+    expect(status).toBe(201);
+    expect(body).toEqual({ imported: 3 });
+
+    const page = await server.json<Page<Transaction>>("/accounts/1/transactions");
+    expect(page.body.total).toBe(3);
+    const balance = await server.json<{ balance: string }>("/accounts/1");
+    expect(balance.body.balance).toBe("184.50");
+  });
+
+  it("rolls back the whole batch when one row is invalid", async () => {
+    const { status } = await server.json(
+      "/accounts/1/transactions/import",
+      post({
+        transactions: [
+          { amount: "-1.00", category: "food", occurredOn: "2024-03-01" },
+          { amount: "nope", category: "food", occurredOn: "2024-03-02" },
+        ],
+      }),
+    );
+    expect(status).toBe(400);
+    const page = await server.json<Page<Transaction>>("/accounts/1/transactions");
+    expect(page.body.total).toBe(0);
+  });
+
+  it("rejects an empty batch", async () => {
+    const { status } = await server.json(
+      "/accounts/1/transactions/import",
+      post({ transactions: [] }),
+    );
+    expect(status).toBe(400);
+  });
+
+  it("returns 404 for an unknown account", async () => {
+    const { status } = await server.json(
+      "/accounts/99/transactions/import",
+      post({ transactions: [{ amount: "-1.00", category: "food", occurredOn: "2024-03-01" }] }),
+    );
+    expect(status).toBe(404);
+  });
+});
+
 describe("GET/DELETE /accounts/:accountId/transactions/:id", () => {
   it("fetches a single transaction", async () => {
     await tx("-1.00");
